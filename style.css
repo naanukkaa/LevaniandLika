@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: 'DM Medea Display';
-  src: url(DM-Medea.ttf) format('truetype');
+  src: url(./MCh\ Ma\ Si\ Vardi\ Serif\ -\ Regular.otf) format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -34,11 +34,6 @@
   --border:    #d5ccc0;
   --rule:      #c8bdb0;
 }
-
-/* ===== DM MEDEA DISPLAY — FONT SIZE CONFIG =====
-   Edit values below to resize Georgian (ka) and English (en)
-   independently. sm = mobile, md = 481px, lg = 769px, xl = 1025px
-   ====================================================== */
 
 /* — Georgian — */
 :root {
@@ -103,7 +98,7 @@ body.lang-en {
 }
 
 body.lang-en .h-names {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Petit Formal Script', serif;
 }
 
 input, textarea, select, button {

@@ -279,7 +279,7 @@ window.scrollTo(0, 0);
 
   // ===== Countdown =====
 
-  var cdTarget = new Date('2026-07-18T14:00:00+04:00').getTime();
+  var cdTarget = new Date('2027-01-23T14:00:00+04:00').getTime();
   var cdDays   = document.getElementById('cd-days');
   var cdHours  = document.getElementById('cd-hours');
   var cdMins   = document.getElementById('cd-mins');
