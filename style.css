@@ -1144,6 +1144,7 @@ body.lang-en .cd-num {
 /* ===== DAY GROUPS ===== */
 .day-group {
   margin-bottom: 60px;
+  font-family: 'DM Medea', serif;
 }
 
 .day-group:last-child {
