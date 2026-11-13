@@ -127,7 +127,7 @@ body.no-scroll {
 body.scrollbar-ready::-webkit-scrollbar-thumb {
   background-color: var(--rule);
 }
-* {
+html {
   scrollbar-color: var(--rule) var(--bg-alt);
   scrollbar-width: thin;
 }
@@ -576,7 +576,7 @@ body.scrollbar-ready::-webkit-scrollbar-thumb {
 
 @keyframes ringPulse {
   0%, 100% { transform: scale(1); opacity: 0.75; }
-  50%       { transform: scale(1.05); opacity: 1; }
+  50%      { transform: scale(1.05); opacity: 1; }
 }
 
 @keyframes ringExpand {
@@ -667,7 +667,7 @@ body.lang-en .section-title {
   overflow-y: visible;
   overflow-x: clip;
   position: relative;
-  padding-bottom: 10rem;
+  padding-bottom: 6rem;
 }
 
 .events-cards {
@@ -738,7 +738,6 @@ body.lang-en .event-card__venue {
   font-family: 'Cormorant Garamond', serif;
   line-height: 1.2;
 }
-
 
 .g17 {
   font-family: 'DM Medea', serif !important;
@@ -868,6 +867,7 @@ body.lang-ka .event-card__after-desc {
   color: var(--teal);
   border-color: var(--teal);
 }
+
 .thankyou-text {
   font-family: 'DM Medea Display', serif;
   font-size: var(--fs-thankyou);
@@ -880,12 +880,9 @@ body.lang-en .thankyou-text {
   font-family: 'Cormorant Garamond', serif;
 }
 
-
 /* ===== COUNTDOWN ===== */
 .countdown {
   margin-top: 5rem;
-  /* background-color: var(--bg-alt); */
-  /* border-top: 1px solid var(--border); */
   border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -1002,67 +999,595 @@ body.lang-en .cd-num {
   color: var(--teal);
 }
 
-.finale .day-header {
-  margin-bottom: 18px;
+/* ===== SHARED ESTATE FORMS & CARDS (RSVP & WISHES) ===== */
+.estate-card {
+  position: relative;
+  background: rgba(237, 232, 223, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 1.75rem;
+  padding: 34px 24px 32px;
+  margin: 0 auto;
+  max-width: 540px;
+  text-align: left;
+  box-shadow: 0 14px 36px rgba(44, 32, 24, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.finale-video-wrap {
-  width: 50rem;
-  margin-left: -65%;
-  overflow: hidden;
-  margin-bottom: 32px;
-  background: transparent;
+.estate-card::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(201, 164, 106, 0.26);
+  border-radius: 1.35rem;
+  pointer-events: none;
+}
+
+.estate-card__ornament {
+  text-align: center;
+  font-size: 18px;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 18px;
+  opacity: 0.85;
+}
+
+.estate-form {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.estate-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 460px) {
+  .estate-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.estate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.estate-label {
+  font-family: 'DM Medea', 'Noto Serif Georgian', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d4870;
+  letter-spacing: 0.02em;
+}
+
+.estate-req {
+  color: var(--gold-lt);
+}
+
+.estate-opt {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.estate-input,
+.estate-textarea,
+.estate-select {
+  width: 100%;
+  background: rgba(252, 249, 244, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  padding: 13px 15px;
+  font-family: 'DM Medea', 'Noto Serif Georgian', serif;
+  font-size: 15px;
+  color: var(--text);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.estate-input::placeholder,
+.estate-textarea::placeholder {
+  color: rgba(138, 122, 106, 0.72);
+  font-size: 14px;
+}
+
+.estate-input:focus,
+.estate-textarea:focus,
+.estate-select:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(201, 164, 106, 0.16);
+}
+
+.estate-input.is-invalid,
+.estate-textarea.is-invalid,
+.estate-select.is-invalid {
+  border-color: #b85c52;
+  background: rgba(255, 246, 245, 0.96);
+}
+
+.estate-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.65;
+}
+
+.estate-field-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.estate-char-count {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.estate-field-hint {
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.estate-field-error {
+  font-size: 12.5px;
+  color: #a9443a;
+  line-height: 1.4;
+  min-height: 0;
+}
+
+.estate-field-error:empty {
+  display: none;
+}
+
+/* Guest Stepper */
+.guest-stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.guest-stepper__btn {
+  width: 46px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: rgba(252, 249, 244, 0.95);
+  color: #2d4870;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.guest-stepper__btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: #ffffff;
+}
+
+.guest-stepper__btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.guest-stepper__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.guest-stepper .estate-select {
+  text-align: center;
+  text-align-last: center;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--teal) 50%),
+                    linear-gradient(135deg, var(--teal) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px),
+                       calc(100% - 13px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+/* Dynamic Additional Guests */
+.additional-guests {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.additional-guests[hidden] {
+  display: none;
+}
+
+.guest-subcard {
+  background: rgba(244, 239, 230, 0.85);
+  border: 1px dashed rgba(160, 120, 64, 0.42);
+  border-radius: 1.1rem;
+  padding: 16px 16px 18px;
+  animation: guestSlideIn 0.32s ease forwards;
+}
+
+@keyframes guestSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guest-subcard__title {
+  font-family: 'DM Medea Display', 'DM Medea', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-lt);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guest-subcard__title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201, 164, 106, 0.28);
+}
+
+/* Submit Button */
+.estate-btn {
+  margin-top: 4px;
+  width: 100%;
+  padding: 15px 22px;
+  border: 1px solid #2d4870;
+  border-radius: 999px;
+  background: #2d4870;
+  color: #f9f6f0;
+  font-family: 'DM Medea', 'Noto Serif Georgian', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(45, 72, 112, 0.18);
+  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.estate-btn:hover:not(:disabled) {
+  background: #3a5a88;
+  box-shadow: 0 10px 24px rgba(45, 72, 112, 0.25);
+}
+
+.estate-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.estate-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.estate-btn__spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: loaderSpin 0.8s linear infinite;
+}
+
+.estate-btn.is-loading .estate-btn__spinner {
+  display: inline-block;
+}
+
+.estate-status {
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--teal);
+  min-height: 0;
+}
+
+.estate-status:empty {
+  display: none;
+}
+
+.estate-status.is-error {
+  color: #a9443a;
+}
+
+.estate-status.is-success {
+  color: #2d5e4e;
+}
+
+/* ===== RSVP SUCCESS ANIMATION ===== */
+.rsvp-success {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 22px 12px 14px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.rsvp-success.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rsvp-success__badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+}
+
+.rsvp-success__svg {
+  width: 64px;
+  height: 64px;
+}
+
+.rsvp-success__circle {
+  stroke: var(--gold);
+  stroke-width: 1.8;
+  stroke-dasharray: 152;
+  stroke-dashoffset: 152;
+}
+
+.rsvp-success.visible .rsvp-success__circle {
+  animation: strokeDraw 0.75s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.rsvp-success__check {
+  stroke: #2d4870;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+}
+
+.rsvp-success.visible .rsvp-success__check {
+  animation: strokeDraw 0.45s cubic-bezier(0.65, 0, 0.45, 1) 0.45s forwards;
+}
+
+@keyframes strokeDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.rsvp-success__title {
+  font-family: 'DM Medea Display', serif;
+  font-size: 28px;
+  color: #2d4870;
+  margin-bottom: 10px;
+}
+
+.rsvp-success__msg {
+  font-size: 15.5px;
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto 10px;
+}
+
+.rsvp-success__detail {
+  font-size: 13.5px;
+  color: var(--teal);
+  letter-spacing: 0.03em;
+}
+
+/* ===== WEDDING WISHES SECTION ===== */
+.wishes {
+  background-color: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   position: relative;
 }
 
-.finale-video-wrap::before,
-.finale-video-wrap::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.finale-video-wrap::before {
-  top: 0;
-  height: 28%;
-  background: linear-gradient(to bottom, var(--bg), transparent);
-}
-
-.finale-video-wrap::after {
-  bottom: 0;
-  height: 18%;
-  background: linear-gradient(to top, var(--bg), transparent);
-}
-
-.finale-video-wrap video {
-  width: 100%;
-  height: auto;
-  display: block;
-  background: transparent;
-  clip-path: inset(2% 0);
-}
-
-.event-card__note {
-  font-family: 'DM Medea', serif;
-  font-size: 15px;
+.wishes-subtitle {
+  font-size: 14.5px;
   color: var(--text-soft);
-  letter-spacing: 0.02em;
-  line-height: 1.7;
-  margin: 6px auto 30px;
-  max-width: 320px;
-  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-/* ===== CLOSING ===== */
+.wishes .section-rule {
+  margin-bottom: 36px;
+}
+
+.estate-card--wishes {
+  background: rgba(244, 239, 230, 0.96);
+}
+
+.wishes-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(201, 164, 106, 0.12);
+  border: 1px solid rgba(201, 164, 106, 0.36);
+  border-radius: 0.95rem;
+  padding: 13px 14px;
+}
+
+.wishes-disclaimer__icon {
+  color: var(--gold-lt);
+  font-size: 13px;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.wishes-disclaimer__text {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.65;
+  text-align: left;
+}
+
+/* Public Wishes Wall */
+.wishes-wall-wrap {
+  max-width: 540px;
+  margin: 46px auto 0;
+}
+
+.wishes-wall-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.wishes-wall-header__line {
+  flex: 1;
+  max-width: 56px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.wishes-wall-header__title {
+  font-family: 'DM Medea Display', serif;
+  font-size: 19px;
+  color: #2d4870;
+  letter-spacing: 0.04em;
+}
+
+.wishes-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-soft);
+  padding: 18px 0;
+}
+
+.wishes-loading[hidden],
+.wishes-empty[hidden] {
+  display: none;
+}
+
+.wishes-loading__dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(201, 164, 106, 0.3);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: loaderSpin 0.9s linear infinite;
+}
+
+.wishes-empty {
+  font-size: 14px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  padding: 18px 12px;
+}
+
+.wishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Handwritten-Inspired Wish Card */
+.wish-card {
+  position: relative;
+  background: linear-gradient(165deg, #fcf9f3 0%, #f5efe4 100%);
+  border: 1px solid var(--border);
+  border-radius: 1.35rem;
+  padding: 22px 22px 20px;
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(44, 32, 24, 0.045);
+  opacity: 0;
+  transform: translateY(14px);
+  animation: wishCardEnter 0.55s ease forwards;
+}
+
+.wish-card::before {
+  content: '“';
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 46px;
+  line-height: 1;
+  color: rgba(201, 164, 106, 0.32);
+  pointer-events: none;
+}
+
+@keyframes wishCardEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wish-card__message {
+  font-family: 'DM Medea', 'Noto Serif Georgian', serif;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.78;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 14px;
+}
+
+.wish-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(200, 189, 176, 0.7);
+}
+
+.wish-card__author {
+  font-family: 'DM Medea Display', 'DM Medea', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2d4870;
+  letter-spacing: 0.02em;
+}
+
+.wish-card__author::before {
+  content: '— ';
+  color: var(--gold-lt);
+}
+
+.wish-card__date {
+  font-size: 11.5px;
+  color: var(--text-soft);
+}
+
+/* ===== CLOSING & RSVP ===== */
 .closing {
   background-color: var(--bg);
   background-image: url(last-bg.jpg);
   background-size: cover;
   background-position: center;
-  /* border-top: 1px solid var(--border); */
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -1097,20 +1622,28 @@ body.lang-en .cd-num {
   display: block;
   width: 240px;
   max-width: 72%;
-  margin: -3rem auto 0px;
+  margin: -3rem auto 8px;
   mix-blend-mode: multiply;
   opacity: 0.95;
 }
 
+.rsvp-heading {
+  margin-bottom: 10px;
+}
+
 .closing-line {
-  /* font-family: 'Cormorant Garamond', serif; */
   font-size: 12px;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.26em;
   font-weight: 800;
   color: var(--teal);
-  line-height: 2.2;
-  margin-bottom: 28px;
-  padding: 0 60px;
+  line-height: 2.1;
+  margin-bottom: 24px;
+  padding: 0 20px;
+}
+
+.estate-card--rsvp {
+  margin-top: 22px;
+  margin-bottom: 42px;
 }
 
 .closing-divider {
@@ -1121,7 +1654,6 @@ body.lang-en .cd-num {
 }
 
 .closing-love {
-  /* font-family: 'Cormorant Garamond', serif; */
   font-size: 18px;
   font-weight: 800;
   color: var(--text-soft);
@@ -1136,7 +1668,7 @@ body.lang-en .cd-num {
   letter-spacing: 0.03em;
   line-height: 1.2;
 }
-  
+
 body.lang-en .closing-names {
   font-family: 'Cormorant Garamond', serif;
 }
@@ -1166,7 +1698,6 @@ body.lang-en .closing-names {
   user-select: none;
   -webkit-user-select: none;
 }
-
 
 @keyframes petalFallA {
   0%   { transform: translateY(-100px) translateX(0) rotate(0deg);    opacity: 0; }
@@ -1204,7 +1735,6 @@ body.lang-en .closing-names {
 }
 
 @media (min-width: 769px) {
-  /* hide everything */
   body > *:not(#desktop-notice) {
     display: none !important;
   }
@@ -1244,20 +1774,6 @@ body.lang-en .closing-names {
     margin-top: 2px;
   }
 }
-
-/* ===== BREAKPOINTS ===== */
-/* @media (min-width: 481px) {
-  .h-names        { font-size: var(--fs-names-md); }
-  .h-date         { font-size: 14px; }
-  .h-subtitle     { font-size: 17px; }
-  .h-initials     { width: 150px; }
-  .section        { padding: 96px 40px; }
-  .section-title  { font-size: var(--fs-title-md); }
-  .cd-num         { font-size: 56px; }
-  .cd-unit        { min-width: 78px; padding: 0 20px; }
-  .closing-names  { font-size: 42px; }
-  .closing-crest  { width: 280px; }
-} */
 
 @media (min-width: 769px) {
   .h-names        { font-size: var(--fs-names-lg); }

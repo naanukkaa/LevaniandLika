@@ -10,7 +10,7 @@
         <link href="_ext/fonts.googleapis.com/css2/index_1hvz4fy.html" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap" rel="stylesheet">    
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Georgian:wght@400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
     </head>
     <body class="no-scroll">
@@ -120,7 +120,7 @@
                                     <img src="./church.jpg" alt="">
                                 </div>
                                 <p class="event-card__label" data-ka="საეკლესიო ცერემონია" data-en="CHURCH CEREMONY">საეკლესიო ცერემონია</p>
-                                <h3 class="event-card__venue" data-ka="ვაკის წმინდა სამების ეკლესია" data-en="​Vake Holy Trinity Church">ვაკის წმინდა სამების ეკლესია</h3>
+                                <h3 class="event-card__venue" data-ka="ვაკის წმინდა სამების ეკლესია" data-en="Vake Holy Trinity Church">ვაკის წმინდა სამების ეკლესია</h3>
                                 <p class="event-card__addr" data-ka="PQ65+G7X, თბილისი" data-en="PQ65+G7X, Tbilisi">PQ65+G7X, თბილისი</p>
                                 <div class="event-card__rule"></div>
                                 <a class="event-card__map" href="https://share.google/G0A0MOMsrcSQ8wY7X" target="_blank" rel="noopener" data-ka="რუკაზე ნახვა" data-en="View on Map">რუკაზე ნახვა</a>
@@ -153,12 +153,141 @@
                     </div>
                 </div>
             </section>
-            <!-- Closing -->
-            <section class="section closing" id="closing">
+
+            <!-- Wedding Wishes — სურვილები -->
+            <section class="section wishes" id="wishes">
                 <div class="section-inner reveal">
+                    <h2 class="section-title">სურვილები</h2>
+                    <p class="wishes-subtitle">გაგვიზიარეთ თქვენი თბილი სიტყვები და კეთილი სურვილები</p>
+                    <div class="section-rule"></div>
+
+                    <div class="estate-card estate-card--wishes">
+                        <div class="estate-card__ornament" aria-hidden="true">❧</div>
+                        <form id="wishes-form" class="estate-form" novalidate>
+                            <div class="estate-field">
+                                <label class="estate-label" for="wish-name">სახელი <span class="estate-req">*</span></label>
+                                <input class="estate-input" type="text" id="wish-name" name="first_name" maxlength="100" autocomplete="given-name" placeholder="შეიყვანეთ თქვენი სახელი" required>
+                                <p class="estate-field-error" id="wish-name-error" role="alert"></p>
+                            </div>
+
+                            <div class="estate-field">
+                                <label class="estate-label" for="wish-message">თქვენი სურვილი ლევანისა და ლიკას <span class="estate-req">*</span></label>
+                                <textarea class="estate-textarea" id="wish-message" name="message" rows="4" maxlength="500" placeholder="დაწერეთ თქვენი სურვილი..." required></textarea>
+                                <div class="estate-field-meta">
+                                    <p class="estate-field-error" id="wish-message-error" role="alert"></p>
+                                    <span class="estate-char-count" id="wish-char-count">0 / 500</span>
+                                </div>
+                            </div>
+
+                            <div class="wishes-disclaimer" role="note">
+                                <span class="wishes-disclaimer__icon" aria-hidden="true">✦</span>
+                                <p class="wishes-disclaimer__text">გთხოვთ, გაითვალისწინოთ: თქვენი სურვილის გამოქვეყნების შემდეგ მისი შეცვლა ან წაშლა თქვენი მხრიდან შეუძლებელი იქნება. სურვილების მართვა და წაშლა მხოლოდ ადმინისტრატორს შეუძლია.</p>
+                            </div>
+
+                            <button type="submit" class="estate-btn" id="wish-submit">
+                                <span class="estate-btn__spinner" aria-hidden="true"></span>
+                                <span class="estate-btn__text">სურვილის გამოქვეყნება</span>
+                            </button>
+
+                            <p class="estate-status" id="wish-status" role="status" aria-live="polite"></p>
+                        </form>
+                    </div>
+
+                    <!-- Public Wishes Wall -->
+                    <div class="wishes-wall-wrap">
+                        <div class="wishes-wall-header">
+                            <span class="wishes-wall-header__line"></span>
+                            <span class="wishes-wall-header__title">სტუმრების სურვილები</span>
+                            <span class="wishes-wall-header__line"></span>
+                        </div>
+                        <div class="wishes-loading" id="wishes-loading">
+                            <span class="wishes-loading__dot"></span>
+                            <span>სურვილები იტვირთება...</span>
+                        </div>
+                        <p class="wishes-empty" id="wishes-empty" hidden>ჯერ სურვილები არ არის. იყავით პირველი, ვინც დატოვებს თბილ სიტყვებს!</p>
+                        <div class="wishes-list" id="wishes-list" aria-live="polite"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Closing & RSVP — დაადასტურეთ დასწრება -->
+            <section class="section closing" id="closing">
+                <div class="section-inner reveal" id="rsvp">
                     <img class="closing-crest" src="initials.png" alt="L &amp; L">
-                    <p class="closing-line" style="margin-bottom: 0; " data-ka="გთხოვთ დაგვიდასტუროთ თქვენი მობრძანება" data-en="Please confirm your attendance via DM by">გთხოვთ დაგვიდასტუროთ თქვენი მობრძანება</p>
-                    <p class="closing-line" style="margin-top: 0; font-weight: bolder; " data-ka="10 იანვრამდე " data-en="January 10th 2026">10 იანვრამდე</p>
+                    <h2 class="section-title rsvp-heading">დაადასტურეთ დასწრება</h2>
+                    <p class="closing-line" style="margin-bottom: 0;">გთხოვთ დაგვიდასტუროთ თქვენი მობრძანება</p>
+                    <p class="closing-line" style="margin-top: 0; font-weight: bolder;">10 იანვრამდე</p>
+
+                    <div class="estate-card estate-card--rsvp">
+                        <div class="estate-card__ornament" aria-hidden="true">❧</div>
+
+                        <form id="rsvp-form" class="estate-form" novalidate>
+                            <div class="estate-row">
+                                <div class="estate-field">
+                                    <label class="estate-label" for="rsvp-name">სახელი <span class="estate-req">*</span></label>
+                                    <input class="estate-input" type="text" id="rsvp-name" name="first_name" maxlength="100" autocomplete="given-name" placeholder="მაგ: ნინო" required>
+                                    <p class="estate-field-error" id="rsvp-name-error" role="alert"></p>
+                                </div>
+
+                                <div class="estate-field">
+                                    <label class="estate-label" for="rsvp-surname">გვარი <span class="estate-req">*</span></label>
+                                    <input class="estate-input" type="text" id="rsvp-surname" name="last_name" maxlength="100" autocomplete="family-name" placeholder="მაგ: გიორგაძე" required>
+                                    <p class="estate-field-error" id="rsvp-surname-error" role="alert"></p>
+                                </div>
+                            </div>
+
+                            <div class="estate-field">
+                                <label class="estate-label" for="rsvp-count">რამდენი ადამიანი დაესწრება? <span class="estate-req">*</span></label>
+                                <div class="guest-stepper">
+                                    <button type="button" class="guest-stepper__btn" id="rsvp-dec" aria-label="სტუმრების რაოდენობის შემცირება">−</button>
+                                    <select class="estate-select" id="rsvp-count" name="attendee_count" required>
+                                        <option value="1" selected>1 სტუმარი (მხოლოდ მე)</option>
+                                        <option value="2">2 სტუმარი</option>
+                                        <option value="3">3 სტუმარი</option>
+                                        <option value="4">4 სტუმარი</option>
+                                        <option value="5">5 სტუმარი</option>
+                                        <option value="6">6 სტუმარი</option>
+                                        <option value="7">7 სტუმარი</option>
+                                        <option value="8">8 სტუმარი</option>
+                                        <option value="9">9 სტუმარი</option>
+                                        <option value="10">10 სტუმარი</option>
+                                    </select>
+                                    <button type="button" class="guest-stepper__btn" id="rsvp-inc" aria-label="სტუმრების რაოდენობის გაზრდა">+</button>
+                                </div>
+                                <p class="estate-field-hint">პირველი სტუმარი ხართ თქვენ. 2 ან მეტი სტუმრის არჩევისას შეიყვანეთ თანმხლები პირების მონაცემები.</p>
+                                <p class="estate-field-error" id="rsvp-count-error" role="alert"></p>
+                            </div>
+
+                            <!-- Dynamic Accompanying Guests Container -->
+                            <div id="additional-guests-container" class="additional-guests" hidden></div>
+
+                            <div class="estate-field">
+                                <label class="estate-label" for="rsvp-message">შეტყობინება ლევანისა და ლიკას <span class="estate-opt">(არასავალდებულო)</span></label>
+                                <textarea class="estate-textarea" id="rsvp-message" name="message" rows="3" maxlength="500" placeholder="სურვილისამებრ დაგვიტოვეთ შეტყობინება..."></textarea>
+                            </div>
+
+                            <button type="submit" class="estate-btn" id="rsvp-submit">
+                                <span class="estate-btn__spinner" aria-hidden="true"></span>
+                                <span class="estate-btn__text">დასწრების დადასტურება</span>
+                            </button>
+
+                            <p class="estate-status" id="rsvp-status" role="status" aria-live="polite"></p>
+                        </form>
+
+                        <!-- RSVP Success State -->
+                        <div class="rsvp-success" id="rsvp-thankyou" aria-hidden="true" hidden>
+                            <div class="rsvp-success__badge" aria-hidden="true">
+                                <svg class="rsvp-success__svg" viewBox="0 0 52 52">
+                                    <circle class="rsvp-success__circle" cx="26" cy="26" r="24" fill="none"/>
+                                    <path class="rsvp-success__check" fill="none" d="M15 27l7 7 15-15"/>
+                                </svg>
+                            </div>
+                            <h3 class="rsvp-success__title">მადლობა!</h3>
+                            <p class="rsvp-success__msg" id="rsvp-success-msg">თქვენი დასწრება წარმატებით დადასტურდა. მოუთმენლად ველით თქვენთან შეხვედრას!</p>
+                            <p class="rsvp-success__detail" id="rsvp-success-detail"></p>
+                        </div>
+                    </div>
+
                     <div class="closing-divider"></div>
                     <p class="closing-love" data-ka="სიყვარულით," data-en="With love,">სიყვარულით,</p>
                     <p class="closing-names" data-ka="ლიკა &amp; ლევანი" data-en="Lika &amp; Levan">ლიკა &amp; ლევანი</p>
@@ -172,7 +301,6 @@
             <p class="desktop-notice__ka desktop-notice__sub">გახსენით თქვენს სმარტფონზე.</p>
             <p class="desktop-notice__en desktop-notice__sub">Please open it on your smartphone.</p>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="script.js"></script>
-    
-
-</body></html>
+    </body></html>

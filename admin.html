@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ka" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ლიკა &amp; ლევანი — ადმინისტრირების პანელი</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Serif+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Initial Session Gate Loader -->
+  <div id="auth-gate-loader" class="gate-loader">
+    <div class="gate-loader__ring"></div>
+    <p class="gate-loader__text">სესიის შემოწმება...</p>
+  </div>
+
+  <!-- Admin Login View (No Public Registration) -->
+  <main id="login-view" class="login-shell" hidden>
+    <div class="login-card">
+      <div class="login-card__crest">
+        <img src="initials.png" alt="L &amp; L" onerror="this.style.display='none'">
+      </div>
+      <p class="login-card__eyebrow">23 იანვარი 2027 • პირადი სივრცე</p>
+      <h1 class="login-card__title">ლიკა &amp; ლევანი</h1>
+      <p class="login-card__subtitle">საქორწილო მოსაწვევის მართვის პანელი</p>
+
+      <div class="login-card__rule"></div>
+
+      <form id="login-form" class="admin-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-email">ელ-ფოსტა</label>
+          <input class="form-input" type="email" id="login-email" autocomplete="username" placeholder="admin@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">პაროლი</label>
+          <div class="password-wrap">
+            <input class="form-input" type="password" id="login-password" autocomplete="current-password" placeholder="••••••••" required>
+            <button type="button" class="password-toggle" id="toggle-password" aria-label="პაროლის ჩვენება">ჩვენება</button>
+          </div>
+        </div>
+
+        <p id="login-error" class="form-error" role="alert"></p>
+
+        <button type="submit" class="btn btn--primary btn--full" id="login-submit">
+          <span class="btn__spinner" aria-hidden="true"></span>
+          <span class="btn__label">შესვლა</span>
+        </button>
+      </form>
+
+      <div class="login-card__footer">
+        <a href="./index.html" class="login-card__back">← მოსაწვევზე დაბრუნება</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Authenticated Admin Workspace -->
+  <div id="dashboard-app" class="app-shell" hidden>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+
+    <!-- Desktop & Mobile Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-label="მთავარი მენიუ">
+      <div class="sidebar__brand">
+        <img class="sidebar__crest" src="initials.png" alt="L &amp; L" onerror="this.style.display='none'">
+        <div>
+          <div class="sidebar__couple">ლიკა &amp; ლევანი</div>
+          <div class="sidebar__meta">ადმინისტრირება</div>
+        </div>
+        <button type="button" class="sidebar__close" id="sidebar-close" aria-label="მენიუს დახურვა">✕</button>
+      </div>
+
+      <nav class="sidebar__nav">
+        <button type="button" class="nav-item is-active" data-view="overview">
+          <span class="nav-item__icon" aria-hidden="true">❖</span>
+          <span class="nav-item__text">მიმოხილვა</span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="rsvps">
+          <span class="nav-item__icon" aria-hidden="true">✉</span>
+          <span class="nav-item__text">დასწრების დადასტურებები</span>
+          <span class="nav-item__badge" id="nav-rsvp-count">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="wishes">
+          <span class="nav-item__icon" aria-hidden="true">❦</span>
+          <span class="nav-item__text">სტუმრების სურვილები</span>
+          <span class="nav-item__badge" id="nav-wishes-count">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="notifications">
+          <span class="nav-item__icon" aria-hidden="true">🔔</span>
+          <span class="nav-item__text">შეტყობინებები</span>
+          <span class="nav-item__badge nav-item__badge--accent" id="nav-unread-count" hidden>0</span>
+        </button>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="admin-profile">
+          <div class="admin-profile__avatar" id="admin-avatar">ლ</div>
+          <div class="admin-profile__info">
+            <div class="admin-profile__name" id="admin-display-name">ადმინისტრატორი</div>
+            <div class="admin-profile__email" id="admin-email-text"></div>
+          </div>
+        </div>
+
+        <div class="sidebar__actions">
+          <a href="./index.html" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">მოსაწვევის ნახვა ↗</a>
+          <button type="button" id="logout-btn" class="btn btn--outline btn--sm">გასვლა</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="main-wrap">
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button type="button" class="topbar__menu-btn" id="sidebar-open" aria-label="მენიუს გახსნა">☰</button>
+          <div>
+            <h2 class="topbar__title" id="topbar-title">მიმოხილვა</h2>
+            <p class="topbar__subtitle" id="topbar-subtitle">ქორწილის სტუმრებისა და სურვილების ცოცხალი სტატისტიკა</p>
+          </div>
+        </div>
+
+        <div class="topbar__right">
+          <div class="realtime-pill" id="realtime-status" title="პირდაპირი კავშირი">
+            <span class="realtime-pill__dot"></span>
+            <span class="realtime-pill__label">Live</span>
+          </div>
+
+          <button type="button" class="notif-bell" id="notif-drawer-toggle" aria-label="შეტყობინებები">
+            <span aria-hidden="true">🔔</span>
+            <span class="notif-bell__count" id="topbar-unread-badge" hidden>0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Global Error Banner -->
+      <div id="global-banner" class="global-banner" role="alert" hidden>
+        <span id="global-banner-text"></span>
+        <button type="button" id="global-banner-retry" class="btn btn--sm btn--outline">განახლება</button>
+      </div>
+
+      <!-- Content Area -->
+      <main class="content">
+
+        <!-- VIEW 1: OVERVIEW (მიმოხილვა) -->
+        <section id="view-overview" class="view-section is-active">
+          <div class="stats-grid" id="stats-grid">
+            <article class="stat-card">
+              <div class="stat-card__top">
+                <span class="stat-card__label">სულ RSVP</span>
+                <span class="stat-card__icon">✉</span>
+              </div>
+              <div class="stat-card__value skeleton-text" id="stat-total-rsvps">—</div>
+              <div class="stat-card__hint">მიღებული დადასტურება</div>
+            </article>
+
+            <article class="stat-card stat-card--highlight">
+              <div class="stat-card__top">
+                <span class="stat-card__label">სულ დადასტურებული სტუმარი</span>
+                <span class="stat-card__icon">✦</span>
+              </div>
+              <div class="stat-card__value skeleton-text" id="stat-total-guests">—</div>
+              <div class="stat-card__hint">ძირითადი და თანმხლები სტუმრები</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-card__top">
+                <span class="stat-card__label">დამატებითი სტუმრები</span>
+                <span class="stat-card__icon">+</span>
+              </div>
+              <div class="stat-card__value skeleton-text" id="stat-additional-guests">—</div>
+              <div class="stat-card__hint">თანმხლები პირები</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-card__top">
+                <span class="stat-card__label">მიღებული სურვილები</span>
+                <span class="stat-card__icon">❦</span>
+              </div>
+              <div class="stat-card__value skeleton-text" id="stat-total-wishes">—</div>
+              <div class="stat-card__hint">გამოქვეყნებული კეთილი სურვილი</div>
+            </article>
+          </div>
+
+          <div class="overview-grid">
+            <!-- Recent Activity -->
+            <div class="panel">
+              <div class="panel__header">
+                <div>
+                  <h3 class="panel__title">ბოლო აქტივობები</h3>
+                  <p class="panel__desc">უახლესი დადასტურებები და სტუმრების სურვილები</p>
+                </div>
+                <button type="button" class="btn btn--ghost btn--sm" id="mark-all-read-overview">ყველას წაკითხვა</button>
+              </div>
+              <div id="recent-activity-list" class="activity-list"></div>
+            </div>
+
+            <!-- Quick Summary Card -->
+            <div class="panel panel--ivory">
+              <div class="panel__header">
+                <div>
+                  <h3 class="panel__title">სწრაფი ნავიგაცია</h3>
+                  <p class="panel__desc">მართეთ სტუმრების სია და მოსაწვევის სურვილები</p>
+                </div>
+              </div>
+              <div class="quick-links">
+                <button type="button" class="quick-link-card" data-jump-view="rsvps">
+                  <span class="quick-link-card__title">დასწრების დადასტურებები →</span>
+                  <span class="quick-link-card__sub">სტუმრების ძიება, თანმხლები პირების ნახვა და სრული სია</span>
+                </button>
+                <button type="button" class="quick-link-card" data-jump-view="wishes">
+                  <span class="quick-link-card__title">სტუმრების სურვილები →</span>
+                  <span class="quick-link-card__sub">მოსაწვევზე გამოქვეყნებული სურვილების დათვალიერება და წაშლა</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: RSVP MANAGEMENT (დასწრების დადასტურებები) -->
+        <section id="view-rsvps" class="view-section" hidden>
+          <div class="panel">
+            <div class="panel__header panel__header--wrap">
+              <div>
+                <h3 class="panel__title">დასწრების დადასტურებები</h3>
+                <p class="panel__desc">ძირითადი და თანმხლები სტუმრების სრული მართვა</p>
+              </div>
+
+              <div class="segmented-tabs" role="tablist">
+                <button type="button" class="segmented-tab is-active" id="tab-rsvp-records" role="tab" aria-selected="true">RSVP ჩანაწერები</button>
+                <button type="button" class="segmented-tab" id="tab-consolidated-guests" role="tab" aria-selected="false">სრული სტუმრების სია</button>
+              </div>
+            </div>
+
+            <!-- Search, Filter & Sort Toolbar -->
+            <div class="toolbar">
+              <div class="toolbar__search">
+                <input type="search" id="rsvp-search" class="form-input" placeholder="მოძებნეთ სახელით, გვარით ან შეტყობინებით...">
+              </div>
+
+              <div class="toolbar__controls" id="rsvp-records-controls">
+                <select id="rsvp-filter" class="form-select" aria-label="ფილტრი">
+                  <option value="all">ყველა ჩანაწერი</option>
+                  <option value="solo">მხოლოდ 1 სტუმარი</option>
+                  <option value="group">თანმხლები სტუმრებით (2+)</option>
+                  <option value="with_message">შეტყობინებით</option>
+                </select>
+
+                <select id="rsvp-sort" class="form-select" aria-label="დალაგება">
+                  <option value="newest">უახლესი პირველი</option>
+                  <option value="oldest">უძველესი პირველი</option>
+                  <option value="guests_desc">სტუმრების რაოდენობა (კლებადობით)</option>
+                  <option value="name_asc">სახელი (ა–ჰ)</option>
+                </select>
+              </div>
+
+              <div class="toolbar__controls" id="consolidated-controls" hidden>
+                <select id="guest-role-filter" class="form-select" aria-label="სტუმრის ტიპი">
+                  <option value="all">ყველა სტუმარი</option>
+                  <option value="primary">ძირითადი სტუმრები</option>
+                  <option value="additional">თანმხლები სტუმრები</option>
+                </select>
+                <button type="button" id="export-guests-csv" class="btn btn--outline btn--sm">CSV ექსპორტი</button>
+              </div>
+            </div>
+
+            <!-- Sub-view A: Primary RSVP Records Table -->
+            <div id="rsvp-records-wrap">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ძირითადი სტუმარი</th>
+                      <th>სტუმრების რაოდენობა</th>
+                      <th>თარიღი</th>
+                      <th>შეტყობინება</th>
+                      <th class="text-right">მოქმედება</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rsvp-table-body"></tbody>
+                </table>
+              </div>
+              <div id="rsvp-empty" class="empty-state" hidden>
+                <div class="empty-state__icon">✉</div>
+                <p class="empty-state__title">ჩანაწერები ვერ მოიძებნა</p>
+                <p class="empty-state__desc">შეცვალეთ ძიების პარამეტრები ან დაელოდეთ სტუმრების ახალ დადასტურებებს.</p>
+              </div>
+            </div>
+
+            <!-- Sub-view B: Consolidated Guest List (Primary + Accompanying) -->
+            <div id="consolidated-guests-wrap" hidden>
+              <div class="consolidated-summary" id="consolidated-summary"></div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>სტუმრის სახელი და გვარი</th>
+                      <th>სტატუსი / ჯგუფი</th>
+                      <th>თარიღი</th>
+                      <th class="text-right">ჩანაწერი</th>
+                    </tr>
+                  </thead>
+                  <tbody id="consolidated-table-body"></tbody>
+                </table>
+              </div>
+              <div id="consolidated-empty" class="empty-state" hidden>
+                <div class="empty-state__icon">✦</div>
+                <p class="empty-state__title">სტუმრები ვერ მოიძებნა</p>
+                <p class="empty-state__desc">სცადეთ სხვა საძიებო სიტყვა.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: WISHES MANAGEMENT (სტუმრების სურვილები) -->
+        <section id="view-wishes" class="view-section" hidden>
+          <div class="panel">
+            <div class="panel__header panel__header--wrap">
+              <div>
+                <h3 class="panel__title">სტუმრების სურვილები</h3>
+                <p class="panel__desc">მოსაწვევზე გამოქვეყნებული ყველა სურვილი — წაშლა ავტომატურად შლის სურვილს საჯარო გვერდიდანაც</p>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="toolbar__search">
+                <input type="search" id="wishes-search" class="form-input" placeholder="მოძებნეთ სტუმრის სახელით ან სურვილის ტექსტით...">
+              </div>
+              <div class="toolbar__controls">
+                <select id="wishes-sort" class="form-select" aria-label="დალაგება">
+                  <option value="newest">უახლესი პირველი</option>
+                  <option value="oldest">უძველესი პირველი</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="admin-wishes-grid" class="wishes-admin-grid"></div>
+
+            <div id="wishes-empty" class="empty-state" hidden>
+              <div class="empty-state__icon">❦</div>
+              <p class="empty-state__title">სურვილები ვერ მოიძებნა</p>
+              <p class="empty-state__desc">ჯერჯერობით სურვილები არ არის ან ძიების შედეგი ცარიელია.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 4: FULL NOTIFICATIONS PAGE -->
+        <section id="view-notifications" class="view-section" hidden>
+          <div class="panel">
+            <div class="panel__header panel__header--wrap">
+              <div>
+                <h3 class="panel__title">შეტყობინებების ისტორია</h3>
+                <p class="panel__desc">ყველა მოვლენა პირდაპირი სინქრონიზაციით ორივე ადმინისტრატორისთვის</p>
+              </div>
+              <button type="button" id="mark-all-read-page" class="btn btn--outline btn--sm">ყველას წაკითხულად მონიშვნა</button>
+            </div>
+
+            <div id="notifications-page-list" class="notif-list"></div>
+
+            <div id="notifications-page-empty" class="empty-state" hidden>
+              <div class="empty-state__icon">🔔</div>
+              <p class="empty-state__title">შეტყობინებები არ არის</p>
+              <p class="empty-state__desc">ახალი RSVP-ის ან სურვილის მიღებისთანავე შეტყობინება აქ გამოჩნდება.</p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Slide-Over Notifications Drawer -->
+  <div id="notif-drawer-backdrop" class="modal-backdrop" hidden></div>
+  <aside id="notif-drawer" class="notif-drawer" aria-label="შეტყობინებების პანელი" hidden>
+    <div class="notif-drawer__header">
+      <div>
+        <h3 class="notif-drawer__title">შეტყობინებები</h3>
+        <p class="notif-drawer__sub" id="drawer-unread-label">წაუკითხავი: 0</p>
+      </div>
+      <div class="notif-drawer__actions">
+        <button type="button" id="mark-all-read-drawer" class="btn btn--ghost btn--sm">ყველას წაკითხვა</button>
+        <button type="button" id="notif-drawer-close" class="icon-close" aria-label="დახურვა">✕</button>
+      </div>
+    </div>
+    <div id="notif-drawer-list" class="notif-drawer__body"></div>
+  </aside>
+
+  <!-- RSVP Details Modal -->
+  <div id="rsvp-modal-backdrop" class="modal-backdrop" hidden></div>
+  <div id="rsvp-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title" hidden>
+    <div class="modal__header">
+      <div>
+        <p class="modal__eyebrow">დასწრების დეტალები</p>
+        <h3 class="modal__title" id="rsvp-modal-title">—</h3>
+      </div>
+      <button type="button" id="rsvp-modal-close" class="icon-close" aria-label="დახურვა">✕</button>
+    </div>
+    <div class="modal__body" id="rsvp-modal-body"></div>
+    <div class="modal__footer">
+      <button type="button" id="rsvp-modal-delete" class="btn btn--danger">ჩანაწერის წაშლა</button>
+      <button type="button" id="rsvp-modal-done" class="btn btn--outline">დახურვა</button>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="confirm-modal-backdrop" class="modal-backdrop" hidden></div>
+  <div id="confirm-modal" class="modal modal--sm" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" hidden>
+    <div class="modal__header">
+      <h3 class="modal__title" id="confirm-modal-title">დაადასტურეთ წაშლა</h3>
+      <button type="button" id="confirm-modal-close" class="icon-close" aria-label="დახურვა">✕</button>
+    </div>
+    <div class="modal__body">
+      <p id="confirm-modal-message" class="confirm-text"></p>
+    </div>
+    <div class="modal__footer">
+      <button type="button" id="confirm-modal-cancel" class="btn btn--outline">გაუქმება</button>
+      <button type="button" id="confirm-modal-ok" class="btn btn--danger">
+        <span class="btn__spinner" aria-hidden="true"></span>
+        <span class="btn__label">დიახ, წაშლა</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Live Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
